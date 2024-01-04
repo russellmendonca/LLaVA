@@ -1,5 +1,17 @@
 #!/bin/bash
 
+#SBATCH --nodes=1
+#SBATCH --time=48:00:00
+#SBATCH --mem=128G
+#SBATCH --gres=gpu:4
+#SBATCH --partition=deepaklong
+#SBATCH --nodelist=grogu-1-3
+#SBATCH --error=/grogu/user/rmendonc/slurm_logs/0_19.err
+#SBATCH --output=/grogu/user/rmendonc/slurm_logs/0_19.out
+
+cd /home/rmendonc/research/LLaVA
+source activate llava 
+
 deepspeed llava/train/train_mem.py \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
     --deepspeed ./scripts/zero3.json \
